@@ -1,0 +1,78 @@
+using Library.eCommerce.Models;
+using Library.eCommerce.Services;
+using Spring2025_Samples.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Maui.eCommerce.ViewModels
+{
+    public class InventoryManagementViewModel : INotifyPropertyChanged
+    {
+        public Item? SelectedProduct { get; set; }
+        public string? Query { get; set; }
+        private ProductServiceProxy _svc = ProductServiceProxy.Current;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (propertyName is null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void RefreshProductList()
+        {
+            NotifyPropertyChanged(nameof(Products));
+        }
+
+        public ObservableCollection<Item?> Products
+        {
+            get
+            {
+                var filteredList = _svc.Products
+                    .Where(p => p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false)
+                    .Select(p => new Item
+                    {
+                        Product = p,
+                        Name = p.Name,  // Set Name from Product
+                        Quantity = 0    // Default quantity, modify if needed
+                    });
+                return new ObservableCollection<Item?>(filteredList);
+
+
+            }
+        }
+
+        public Item? Delete()
+        {
+            var product = _svc.Delete(SelectedProduct?.Id ?? 0); // product is of type Product?
+    
+            if (product == null)
+            {
+                return null;
+            }
+
+            // Convert Product to Item before returning
+            var item = new Item
+            {
+                Product = product,
+                Name = product.Name,
+                Quantity = 0  // Set the quantity if needed or change as required
+            };
+
+            NotifyPropertyChanged("Products");
+            return item;
+        }
+
+    }
+}
