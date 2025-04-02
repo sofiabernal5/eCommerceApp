@@ -49,19 +49,18 @@ namespace Library.eCommerce.Services
                 Console.WriteLine("Cart is empty. Nothing to checkout.");
             }
         }
-        public void AddItem(Item item)
+        public void AddItem(Item item) 
         {
             var existingItem = items.FirstOrDefault(i => i.Id == item.Id);
             if (existingItem != null)
             {
-                existingItem.Quantity += item.Quantity; // Update quantity if it exists
+                existingItem.Quantity += item.Quantity;  // Update quantity if item already exists
             }
             else
             {
-                items.Add(item);  // Don't reset the quantity here
+                items.Add(item);  // Add new item if it doesn't exist
             }
         }
-
         
         public void RemoveItem(int id)
         {
