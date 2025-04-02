@@ -39,4 +39,5 @@ public partial class ProductDetails : ContentPage
         }
         
     }
+    
 }

@@ -3,28 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.ShoppingManagementView"
              Title="ShoppingManagementView">
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/><!--STORE-->
-            <ColumnDefinition/><!--USER SHOPPING CART-->
+            <ColumnDefinition Width="*" /><!-- STORE -->
+            <ColumnDefinition Width="*" /><!-- USER SHOPPING CART -->
         </Grid.ColumnDefinitions>
 
-        <!--STORE-->
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="10*"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <ListView Grid.Row="0"
-                      ItemsSource="{Binding Inventory}"
-                      SelectedItem="{Binding SelectedItem}"
+        <!-- STORE SECTION -->
+        <VerticalStackLayout Grid.Column="0" Spacing="10" Padding="10">
+            <ListView 
+                ItemsSource="{Binding Inventory}"
+                SelectedItem="{Binding SelectedItem}"
+                HeightRequest="400"
             />
-            <Button Grid.Row="1" Text="+" Clicked="AddToCartClicked"/>
-        </Grid>
+            <Button 
+                Text="Add to Cart" 
+                Clicked="AddToCartClicked" 
+                HorizontalOptions="Center"
+            />
+        </VerticalStackLayout>
 
-        <!--USER SHOPPING CART-->
-        <Grid Grid.Column="1">
-            
-        </Grid>
+        <!-- USER SHOPPING CART SECTION -->
+        <VerticalStackLayout Grid.Column="1" Spacing="10" Padding="10">
+            <Label Text="Shopping Cart" FontSize="Medium" FontAttributes="Bold"/>
+            <ListView 
+                ItemsSource="{Binding CartItems}"
+                SelectedItem="{Binding SelectedItem}"
+                HeightRequest="400"
+            />
+            <Button 
+                Text="Go Back" 
+                Clicked="GoBackClicked" 
+                HorizontalOptions="Center"
+            />
+        </VerticalStackLayout>
     </Grid>
 </ContentPage>

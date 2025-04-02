@@ -35,7 +35,7 @@ namespace Maui.eCommerce.ViewModels
             NotifyPropertyChanged(nameof(Products));
         }
 
-        public ObservableCollection<Item?> Products
+        public ObservableCollection<Item> Products
         {
             get
             {
@@ -43,13 +43,19 @@ namespace Maui.eCommerce.ViewModels
                     .Where(p => p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false)
                     .Select(p => new Item
                     {
-                        Product = p,
-                        Name = p.Name,  // Set Name from Product
-                        Quantity = 0    // Default quantity, modify if needed
-                    });
-                return new ObservableCollection<Item?>(filteredList);
+                        Id = p.Id,
+                        Name = p.Name,
+                        Quantity = p.Quantity,
+                        Price = p.Price,
+                        Product = p
+                    }).ToList();
 
+                foreach (var item in filteredList)
+                {
+                    Console.WriteLine(item.Display);
+                }
 
+                return new ObservableCollection<Item>(filteredList);
             }
         }
 

@@ -1,26 +1,52 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Maui.eCommerce.Views.ProductDetails"
-             Title="ProductDetails"
-             NavigatedTo="ContentPage_NavigatedTo"
->
-    <VerticalStackLayout>
-        <Label 
-            Text="Name:"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry
-            Text="{Binding Name}"
-        />
-        <Label 
-            Text="Quantity:"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry
-            Text="{Binding Quantity}"
-        />
-        <Button Text="Ok" Clicked="OkClicked"/>
-        <Button Text="Go Back" Clicked="GoBackClicked"/>
-    </VerticalStackLayout>
-</ContentPage>
+using Library.eCommerce.Services;
+using Maui.eCommerce.ViewModels;
+
+namespace Maui.eCommerce.Views;
+
+public partial class CartManagementView : ContentPage
+{
+    public CartManagementView()
+    {
+        InitializeComponent();
+        BindingContext = new CartViewModel();
+    }
+
+    private void AddClicked(object sender, EventArgs e)
+    {
+        (BindingContext as CartViewModel)?.Add();
+    }
+
+    private void DeleteClicked(object sender, EventArgs e)
+    {
+        (BindingContext as CartViewModel)?.Delete();
+    }
+
+    private void CheckoutClicked(object sender, EventArgs e)
+    {
+        (BindingContext as CartViewModel)?.Checkout();
+    }
+
+    private void CancelClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//MainPage");
+    }
+
+    private void EditClicked(object sender, EventArgs e)
+    {
+        var itemId = (sender as Button)?.CommandParameter;
+        if (itemId != null)
+        {
+            Shell.Current.GoToAsync($"//Product?itemId={itemId}");
+        }
+    }
+
+    private void SearchClicked(object sender, EventArgs e)
+    {
+        (BindingContext as CartViewModel)?.RefreshCart();
+    }
+
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        (BindingContext as CartViewModel)?.RefreshCart();
+    }
+}

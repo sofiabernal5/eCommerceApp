@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.eCommerce.Views.CartManagementView"
+             Title="CartManagementView"
+             NavigatedTo="ContentPage_NavigatedTo">
+
+    <VerticalStackLayout>
+        <!-- Search Bar for Searching Products -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Entry Placeholder="Search..." Text="{Binding Query}" Grid.Column="0"/>
+            <Button Text="Search" Grid.Column="1" Clicked="SearchClicked"/>
+        </Grid>
+
+        <!-- List of Cart Items -->
+        <ListView
+            ItemsSource="{Binding CartItems}"
+            SelectedItem="{Binding SelectedItem}"
+            CachingStrategy="RecycleElement"
+            HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Display Item Info -->
+                            <Label Grid.Column="0" 
+                                   Text="{Binding Name}" 
+                                   FontSize="18"/>
+                            <Label Grid.Column="1" 
+                                   Text="Qty: {Binding Quantity}" 
+                                   FontSize="14"/>
+                            <Label Grid.Column="2" 
+                                   Text="Price: ${Binding Price}" 
+                                   FontSize="14"/>
+
+                            <!-- Edit and Delete Buttons -->
+                            <Button Text="Edit" 
+                                    Grid.Column="3" 
+                                    CommandParameter="{Binding Id}" 
+                                    Clicked="EditClicked"/>
+                            <Button Text="Delete" 
+                                    Grid.Column="4" 
+                                    CommandParameter="{Binding Id}" 
+                                    Clicked="DeleteClicked"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Button Panel for Add, Delete, and Checkout -->
+        <HorizontalStackLayout>
+            <Button Text="Add" 
+                    Clicked="AddClicked"
+                    BackgroundColor="Green" 
+                    TextColor="White"/>
+            
+            <Button Text="Delete" 
+                    Clicked="DeleteClicked"
+                    BackgroundColor="Red" 
+                    TextColor="White"/>
+
+            <Button Text="Checkout" 
+                    Clicked="CheckoutClicked"
+                    BackgroundColor="Blue" 
+                    TextColor="White"/>
+
+            <Button Text="Go Back" 
+                    Clicked="CancelClicked"
+                    BackgroundColor="Gray" 
+                    TextColor="White"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

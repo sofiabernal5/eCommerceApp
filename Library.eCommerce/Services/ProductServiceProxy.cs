@@ -125,6 +125,7 @@ namespace Library.eCommerce.Services
                 {
                     Id = product.Id,
                     Product = product,
+                    Price = product.Price,
                     Quantity = 1, // Default quantity, can be adjusted if necessary
                     Name = product.Name // Assuming Name is available in Product
                 };

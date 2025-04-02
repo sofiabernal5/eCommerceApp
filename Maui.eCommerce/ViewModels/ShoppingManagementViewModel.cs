@@ -11,22 +11,41 @@ namespace Maui.eCommerce.ViewModels
 {
     public class ShoppingManagementViewModel
     {
-        private ProductServiceProxy _invSvc = ProductServiceProxy.Current;
+        public ObservableCollection<Item> Inventory { get; set; }
+        public ObservableCollection<Item> CartItems { get; set; }
+        public Item? SelectedItem { get; set; }
 
-        public ObservableCollection<Item?> Inventory
+        public ShoppingManagementViewModel()
         {
-            get
-            {
-                var itemList = _invSvc.Products.Select(p => new Item
+            Inventory = new ObservableCollection<Item>(
+                ProductServiceProxy.Current.Products.Select(p => new Item
                 {
-                    Product = p,
+                    Id = p.Id,
                     Name = p.Name,
-                    Quantity = 0  // Set the quantity as needed
-                }).ToList();
+                    Price = p.Price,
+                    Product = p,
+                    Quantity = 1
+                }).ToList()
+            );
+            CartItems = new ObservableCollection<Item>(ShoppingCartService.Current.CartItems);
+        }
 
-                return new ObservableCollection<Item?>(itemList);
+        public void AddToCart()
+        {
+            if (SelectedItem != null)
+            {
+                ShoppingCartService.Current.AddItem(SelectedItem);
+                RefreshCart();
             }
         }
 
+        public void RefreshCart()
+        {
+            CartItems.Clear();
+            foreach (var item in ShoppingCartService.Current.CartItems)
+            {
+                CartItems.Add(item);
+            }
+        }
     }
 }

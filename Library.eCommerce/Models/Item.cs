@@ -12,6 +12,7 @@ namespace Library.eCommerce.Models
         public int Id { get; set; }
         public Product Product { get; set; }
         
+        public double Price { get; set; }
         public string? Name { get; set; }
         public int? Quantity { get; set; }
 
@@ -20,10 +21,12 @@ namespace Library.eCommerce.Models
             return $"{Product} Quantity:{Quantity}";
         }
 
-        public string Display { 
+        public string Display
+        {
             get
             {
-                return Product?.Display ?? string.Empty;
+                var price = Product?.Price ?? 0;
+                return $"{Name}, Quantity: {Quantity}, Price: ${price * Quantity:F2}";
             }
         }
 
