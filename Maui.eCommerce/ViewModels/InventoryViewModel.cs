@@ -35,50 +35,20 @@ namespace Maui.eCommerce.ViewModels
             NotifyPropertyChanged(nameof(Products));
         }
 
-        public ObservableCollection<Item> Products
+        public ObservableCollection<Item?> Products
         {
             get
             {
-                var filteredList = _svc.Products
-                    .Where(p => p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false)
-                    .Select(p => new Item
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Quantity = p.Quantity,
-                        Price = p.Price,
-                        Product = p
-                    }).ToList();
-
-                foreach (var item in filteredList)
-                {
-                    Console.WriteLine(item.Display);
-                }
-
-                return new ObservableCollection<Item>(filteredList);
+                var filteredList = _svc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Item?>(filteredList);
             }
         }
 
         public Item? Delete()
         {
-            var product = _svc.Delete(SelectedProduct?.Id ?? 0); // product is of type Product?
-    
-            if (product == null)
-            {
-                return null;
-            }
-
-            // Convert Product to Item before returning
-            var item = new Item
-            {
-                Product = product,
-                Name = product.Name,
-                Quantity = 0  // Set the quantity if needed or change as required
-            };
-
+            var item = _svc.Delete(SelectedProduct?.Id ?? 0);
             NotifyPropertyChanged("Products");
             return item;
         }
-
     }
 }

@@ -2,41 +2,61 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.ShoppingManagementView"
-             Title="ShoppingManagementView">
+             Title="ShoppingManagementView"
+             NavigatedTo="ContentPage_NavigatedTo">
+    
+    <Grid RowDefinitions="*, Auto">
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" /><!-- STORE -->
+                <ColumnDefinition Width="1*" /><!-- USER SHOPPING CART -->
+            </Grid.ColumnDefinitions>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" /><!-- STORE -->
-            <ColumnDefinition Width="*" /><!-- USER SHOPPING CART -->
-        </Grid.ColumnDefinitions>
+            <!-- STORE -->
+            <Grid Grid.Column="0" Padding="10">
+                <Label Text="Store Inventory" FontSize="20" FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+                
+                <ListView Grid.Row="0"
+                          ItemsSource="{Binding Inventory}"
+                          SelectedItem="{Binding SelectedProduct}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Product.Name}" Detail="{Binding Quantity}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-        <!-- STORE SECTION -->
-        <VerticalStackLayout Grid.Column="0" Spacing="10" Padding="10">
-            <ListView 
-                ItemsSource="{Binding Inventory}"
-                SelectedItem="{Binding SelectedItem}"
-                HeightRequest="400"
-            />
-            <Button 
-                Text="Add to Cart" 
-                Clicked="AddToCartClicked" 
-                HorizontalOptions="Center"
-            />
+                <Button Grid.Row="1" Text="Add to Cart"
+                        Clicked="AddToCartClicked"
+                        BackgroundColor="Blue" TextColor="White"
+                        HorizontalOptions="Fill" HeightRequest="50"/>
+            </Grid>
+
+            <!-- USER SHOPPING CART -->
+            <Grid Grid.Column="1" Padding="10">
+                <Label Text="Shopping Cart" FontSize="20" FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+                
+                <ListView ItemsSource="{Binding ShoppingCart}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Product.Name}" Detail="{Binding Quantity}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+
+        <!-- Buttons Section (Bottom of Page) -->
+        <VerticalStackLayout Grid.Row="1" Padding="10" Spacing="10">
+           
+
+            <Button Text="Go Back" Clicked="CancelClicked"
+                    BackgroundColor="Gray" TextColor="White"
+                    HorizontalOptions="Fill" HeightRequest="50"/>
         </VerticalStackLayout>
 
-        <!-- USER SHOPPING CART SECTION -->
-        <VerticalStackLayout Grid.Column="1" Spacing="10" Padding="10">
-            <Label Text="Shopping Cart" FontSize="Medium" FontAttributes="Bold"/>
-            <ListView 
-                ItemsSource="{Binding CartItems}"
-                SelectedItem="{Binding SelectedItem}"
-                HeightRequest="400"
-            />
-            <Button 
-                Text="Go Back" 
-                Clicked="GoBackClicked" 
-                HorizontalOptions="Center"
-            />
-        </VerticalStackLayout>
     </Grid>
+   
 </ContentPage>

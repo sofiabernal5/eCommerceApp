@@ -46,7 +46,7 @@ namespace Maui.eCommerce.ViewModels
 
         public void AddOrUpdate()
         {
-            ProductServiceProxy.Current.AddOrUpdate(Model?.Product);
+            ProductServiceProxy.Current.AddOrUpdate(Model);
         }
 
         public ProductViewModel() {

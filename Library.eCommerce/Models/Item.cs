@@ -11,9 +11,6 @@ namespace Library.eCommerce.Models
     {
         public int Id { get; set; }
         public Product Product { get; set; }
-        
-        public double Price { get; set; }
-        public string? Name { get; set; }
         public int? Quantity { get; set; }
 
         public override string ToString()
@@ -21,12 +18,10 @@ namespace Library.eCommerce.Models
             return $"{Product} Quantity:{Quantity}";
         }
 
-        public string Display
-        {
+        public string Display { 
             get
             {
-                var price = Product?.Price ?? 0;
-                return $"{Name}, Quantity: {Quantity}, Price: ${price * Quantity:F2}";
+                return Product?.Display ?? string.Empty;
             }
         }
 

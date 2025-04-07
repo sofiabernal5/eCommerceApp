@@ -12,17 +12,17 @@ public partial class ShoppingManagementView : ContentPage
 
     private void AddToCartClicked(object sender, EventArgs e)
     {
-        if (BindingContext is ShoppingManagementViewModel viewModel && viewModel.SelectedItem != null)
-        {
-            viewModel.AddToCart();
-        }
-        else
-        {
-            DisplayAlert("Error", "No item selected to add.", "OK");
-        }
+        (BindingContext as ShoppingManagementViewModel)?.AddToCart();
     }
-    private void GoBackClicked(object sender, EventArgs e)
+    
+    private void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//InventoryManagement");
+        Shell.Current.GoToAsync("//MainPage");
     }
+    
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        (BindingContext as ShoppingManagementViewModel)?.RefreshInventory();
+    }
+	
 }

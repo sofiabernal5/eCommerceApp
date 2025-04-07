@@ -10,7 +10,7 @@ public partial class ProductDetails : ContentPage
     public ProductDetails()
     {
         InitializeComponent();
-		
+        
     }
 
     public int ProductId { get; set; }
@@ -39,5 +39,4 @@ public partial class ProductDetails : ContentPage
         }
         
     }
-    
 }
