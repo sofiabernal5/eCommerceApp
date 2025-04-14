@@ -26,11 +26,11 @@ namespace Maui.eCommerce.ViewModels
             }
         }
 
-        public int? Quantity
+        public int Quantity
         {
             get
             {
-                return Model?.Quantity;
+                return Model.Quantity;
             }
 
             set
@@ -38,6 +38,20 @@ namespace Maui.eCommerce.ViewModels
                 if( Model != null && Model.Quantity != value)
                 {
                     Model.Quantity = value;
+                }
+            }
+        }
+        public double Price
+        {
+            get
+            {
+                return Model?.Price ?? 0;
+            }
+            set
+            {
+                if (Model != null && Model.Price != value)
+                {
+                    Model.Price = value;
                 }
             }
         }

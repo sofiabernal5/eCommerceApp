@@ -11,11 +11,12 @@ namespace Library.eCommerce.Models
     {
         public int Id { get; set; }
         public Product Product { get; set; }
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
 
+        public double? Price { get; set; }
         public override string ToString()
         {
-            return $"{Product} Quantity:{Quantity}";
+            return $"{Product} Quantity:{Quantity} Price:{Price}";
         }
 
         public string Display { 

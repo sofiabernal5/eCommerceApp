@@ -21,9 +21,10 @@ public partial class InventoryManagementView : ContentPage
         Shell.Current.GoToAsync("//MainPage");
     }
 
-    private void AddClicked(object sender, EventArgs e)
+    private async void AddClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//Product");
+        // Try this alternative navigation syntax
+        await Shell.Current.GoToAsync($"//{nameof(ProductDetails)}");
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
@@ -41,4 +42,6 @@ public partial class InventoryManagementView : ContentPage
     {
         (BindingContext as InventoryManagementViewModel)?.RefreshProductList();
     }
+    
+    
 }

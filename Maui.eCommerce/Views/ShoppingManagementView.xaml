@@ -2,61 +2,101 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.ShoppingManagementView"
-             Title="ShoppingManagementView"
+             Title="Shopping Management"
              NavigatedTo="ContentPage_NavigatedTo">
     
-    <Grid RowDefinitions="*, Auto">
-        <Grid Grid.Row="0">
+    <Grid RowDefinitions="Auto, *, Auto">
+        <!-- Header -->
+        <Label Grid.Row="0" Text="Shopping Management" FontSize="24" FontAttributes="Bold" 
+               HorizontalOptions="Center" Margin="0,10" />
+        
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" /><!-- STORE -->
-                <ColumnDefinition Width="1*" /><!-- USER SHOPPING CART -->
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- STORE -->
-            <Grid Grid.Column="0" Padding="10">
-                <Label Text="Store Inventory" FontSize="20" FontAttributes="Bold"
-                       HorizontalOptions="Center"/>
+            <!-- INVENTORY SECTION -->
+            <Grid Grid.Column="0" Padding="10" RowDefinitions="Auto, *, Auto">
+                <Label Grid.Row="0" Text="Store Inventory" FontSize="20" FontAttributes="Bold"
+                       HorizontalOptions="Center" Margin="0,0,0,10"/>
                 
-                <ListView Grid.Row="0"
+                <ListView Grid.Row="1"
                           ItemsSource="{Binding Inventory}"
-                          SelectedItem="{Binding SelectedProduct}">
+                          SelectedItem="{Binding SelectedInventoryItem}"
+                          SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextCell Text="{Binding Product.Name}" Detail="{Binding Quantity}" />
+                            <ViewCell>
+                                <Grid Padding="5" ColumnDefinitions="3*,*,*">
+                                    <Label Grid.Column="0" Text="{Binding Product.Name}" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding Product.Price, StringFormat='${0:F2}'}" VerticalOptions="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Quantity, StringFormat='Qty: {0}'}" VerticalOptions="Center" HorizontalOptions="End" />
+                                </Grid>
+                            </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
-                <Button Grid.Row="1" Text="Add to Cart"
-                        Clicked="AddToCartClicked"
-                        BackgroundColor="Blue" TextColor="White"
-                        HorizontalOptions="Fill" HeightRequest="50"/>
+                
+                <!-- Inventory Actions -->
+                <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="5" Margin="0,10,0,0">
+                    <Button Text="Create" Clicked="CreateInventoryItemClicked" HorizontalOptions="FillAndExpand" 
+                            BackgroundColor="Green" TextColor="White" />
+                    <Button Text="Update" Clicked="UpdateInventoryItemClicked" HorizontalOptions="FillAndExpand" 
+                            BackgroundColor="Blue" TextColor="White" 
+                            IsEnabled="{Binding HasSelectedInventoryItem}" />
+                    <Button Text="Delete" Clicked="DeleteInventoryItemClicked" HorizontalOptions="FillAndExpand" 
+                            BackgroundColor="Red" TextColor="White" 
+                            IsEnabled="{Binding HasSelectedInventoryItem}" />
+                </StackLayout>
             </Grid>
 
-            <!-- USER SHOPPING CART -->
-            <Grid Grid.Column="1" Padding="10">
-                <Label Text="Shopping Cart" FontSize="20" FontAttributes="Bold"
-                       HorizontalOptions="Center"/>
+            <!-- SHOPPING CART SECTION -->
+            <Grid Grid.Column="1" Padding="10" RowDefinitions="Auto, *, Auto">
+                <Label Grid.Row="0" Text="Shopping Cart" FontSize="20" FontAttributes="Bold"
+                       HorizontalOptions="Center" Margin="0,0,0,10"/>
                 
-                <ListView ItemsSource="{Binding ShoppingCart}">
+                <ListView Grid.Row="1"
+                          ItemsSource="{Binding ShoppingCart}"
+                          SelectedItem="{Binding SelectedCartItem}"
+                          SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextCell Text="{Binding Product.Name}" Detail="{Binding Quantity}" />
+                            <ViewCell>
+                                <Grid Padding="5" ColumnDefinitions="3*,*,*">
+                                    <Label Grid.Column="0" Text="{Binding Product.Name}" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding Product.Price, StringFormat='${0:F2}'}" VerticalOptions="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Quantity, StringFormat='Qty: {0}'}" VerticalOptions="Center" HorizontalOptions="End" />
+                                </Grid>
+                            </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                
+                <!-- Cart Actions -->
+                <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="5" Margin="0,10,0,0">
+                    <Button Text="Add To Cart" Clicked="AddToCartClicked" HorizontalOptions="FillAndExpand" 
+                            BackgroundColor="DeepPink" TextColor="White" 
+                            IsEnabled="{Binding CanAddToCart}" />
+                    <Button Text="Update Qty" Clicked="UpdateCartItemClicked" HorizontalOptions="FillAndExpand" 
+                            BackgroundColor="Blue" TextColor="White" 
+                            IsEnabled="{Binding HasSelectedCartItem}" />
+                    <Button Text="Remove" Clicked="RemoveFromCartClicked" HorizontalOptions="FillAndExpand" 
+                            BackgroundColor="Red" TextColor="White" 
+                            IsEnabled="{Binding HasSelectedCartItem}" />
+                </StackLayout>
             </Grid>
         </Grid>
 
-        <!-- Buttons Section (Bottom of Page) -->
-        <VerticalStackLayout Grid.Row="1" Padding="10" Spacing="10">
-           
-
-            <Button Text="Go Back" Clicked="CancelClicked"
-                    BackgroundColor="Gray" TextColor="White"
-                    HorizontalOptions="Fill" HeightRequest="50"/>
-        </VerticalStackLayout>
-
+        <!-- Bottom Buttons -->
+        <StackLayout Grid.Row="2" Orientation="Horizontal" Padding="10" Spacing="10">
+            <Button Text="Checkout" Clicked="CheckoutClicked" HorizontalOptions="FillAndExpand" 
+                    BackgroundColor="Green" TextColor="White" HeightRequest="50"
+                    IsEnabled="{Binding HasCartItems}" />
+            <Button Text="Go Back" Clicked="CancelClicked" HorizontalOptions="FillAndExpand"
+                    BackgroundColor="Gray" TextColor="White" HeightRequest="50" />
+        </StackLayout>
     </Grid>
    
 </ContentPage>
