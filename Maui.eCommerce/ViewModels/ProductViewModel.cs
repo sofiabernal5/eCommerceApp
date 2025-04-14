@@ -3,73 +3,92 @@ using Library.eCommerce.Services;
 using Spring2025_Samples.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Maui.eCommerce.ViewModels
 {
-    public class ProductViewModel
+    public class ProductViewModel : INotifyPropertyChanged
     {
-        public string? Name { 
-            get
+        private Item _model;
+        
+        public event PropertyChangedEventHandler? PropertyChanged;
+        
+        public ProductViewModel()
+        {
+            _model = new Item
             {
-                return Model?.Product?.Name ?? string.Empty;
-            }
+                Product = new Product(),
+                Quantity = 0,
+                Price = 0
+            };
+        }
 
+        public ProductViewModel(Item? model)
+        {
+            _model = model ?? new Item
+            {
+                Product = new Product(),
+                Quantity = 0,
+                Price = 0
+            };
+        }
+        
+        public string? Name
+        { 
+            get => _model?.Product?.Name ?? string.Empty;
             set
             {
-                if(Model != null && Model.Product?.Name != value)
+                if(_model?.Product != null && _model.Product.Name != value)
                 {
-                    Model.Product.Name = value;
+                    _model.Product.Name = value;
+                    NotifyPropertyChanged();
                 }
             }
         }
 
         public int Quantity
         {
-            get
-            {
-                return Model.Quantity;
-            }
-
+            get => _model?.Quantity ?? 0;
             set
             {
-                if( Model != null && Model.Quantity != value)
+                if(_model != null && _model.Quantity != value)
                 {
-                    Model.Quantity = value;
+                    _model.Quantity = value;
+                    NotifyPropertyChanged();
                 }
             }
         }
+        
         public double Price
         {
-            get
-            {
-                return Model?.Price ?? 0;
-            }
+            get => _model?.Product?.Price ?? 0;
             set
             {
-                if (Model != null && Model.Price != value)
+                if(_model?.Product != null && _model.Product.Price != value)
                 {
-                    Model.Price = value;
+                    _model.Product.Price = value;
+                    NotifyPropertyChanged();
                 }
             }
         }
 
-        public Item? Model { get; set; }
+        public Item Model => _model;
 
         public void AddOrUpdate()
         {
-            ProductServiceProxy.Current.AddOrUpdate(Model);
+            if (_model != null)
+            {
+                ProductServiceProxy.Current.AddOrUpdate(_model);
+            }
         }
-
-        public ProductViewModel() {
-            Model = new Item();
-        }
-
-        public ProductViewModel(Item? model)
+        
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            Model = model;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

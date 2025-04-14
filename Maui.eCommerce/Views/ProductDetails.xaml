@@ -2,17 +2,25 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.ProductDetails"
-             Title="ProductDetails"
-             NavigatedTo="ContentPage_NavigatedTo"
->
-    <VerticalStackLayout>
-        <Label Text="Name:" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Entry Text="{Binding Name}"/>
-        <Label Text="Quantity:" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Entry Text="{Binding Quantity}"/>
-        <Label Text="Price:" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Entry Text="{Binding Price}"/>
-        <Button Text="Ok" Clicked="OkClicked"/>
-        <Button Text="Go Back" Clicked="GoBackClicked"/>
+             Title="Product Details"
+             NavigatedTo="ContentPage_NavigatedTo">
+    
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Label Text="Product Details" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" />
+        
+        <Label Text="Name:" FontAttributes="Bold" />
+        <Entry Text="{Binding Name, Mode=TwoWay}" Placeholder="Enter product name" />
+        
+        <Label Text="Price:" FontAttributes="Bold" Margin="0,10,0,0" />
+        <Entry Text="{Binding Price, Mode=TwoWay}" Placeholder="Enter price" Keyboard="Numeric" />
+        
+        <Label Text="Quantity:" FontAttributes="Bold" Margin="0,10,0,0" />
+        <Entry Text="{Binding Quantity, Mode=TwoWay}" Placeholder="Enter quantity" Keyboard="Numeric" />
+        
+        <Button Text="Save" Clicked="OkClicked" Margin="0,20,0,0" 
+                BackgroundColor="Green" TextColor="White" />
+        
+        <Button Text="Cancel" Clicked="GoBackClicked"
+                BackgroundColor="Gray" TextColor="White" />
     </VerticalStackLayout>
 </ContentPage>

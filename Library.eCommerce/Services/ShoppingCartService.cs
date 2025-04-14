@@ -24,6 +24,7 @@ namespace Library.eCommerce.Services
         }
 
         // Add to cart (transfers item from inventory to cart)
+        // In ShoppingCartService.cs - AddToCart method
         public bool AddToCart(Item? inventoryItem)
         {
             if (inventoryItem == null || inventoryItem.Quantity <= 0)
@@ -32,7 +33,7 @@ namespace Library.eCommerce.Services
             // Check if we already have this item in cart
             var existingCartItem = _items.FirstOrDefault(i => 
                 i?.Product?.Id == inventoryItem.Product?.Id);
-            
+    
             // Create new cart item or update existing
             if (existingCartItem != null)
             {
@@ -49,10 +50,10 @@ namespace Library.eCommerce.Services
                 };
                 _items.Add(newCartItem);
             }
-            
+    
             // Decrease quantity in inventory
             inventoryItem.Quantity -= 1;
-            
+    
             // Notify subscribers
             OnCartChanged();
             return true;

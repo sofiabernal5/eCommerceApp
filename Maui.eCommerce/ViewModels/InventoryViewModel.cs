@@ -46,8 +46,10 @@ namespace Maui.eCommerce.ViewModels
 
         public Item? Delete()
         {
-            var item = _svc.Delete(SelectedProduct?.Id ?? 0);
-            NotifyPropertyChanged("Products");
+            if (SelectedProduct == null) return null;
+    
+            var item = _svc.Delete(SelectedProduct.Id);
+            NotifyPropertyChanged(nameof(Products));
             return item;
         }
     }

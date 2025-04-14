@@ -91,6 +91,8 @@ namespace Maui.eCommerce.ViewModels
             if (CanAddToCart)
             {
                 _cartSvc.AddToCart(SelectedInventoryItem);
+                // Add this line to refresh the inventory display
+                NotifyPropertyChanged(nameof(Inventory));
                 NotifyPropertyChanged(nameof(CanAddToCart));
             }
         }
@@ -175,9 +177,9 @@ namespace Maui.eCommerce.ViewModels
 
         public void RefreshInventory()
         {
+            _inventory = new ObservableCollection<Item?>(_invSvc.Products);
             NotifyPropertyChanged(nameof(Inventory));
         }
-
         public void RefreshShoppingCart()
         {
             NotifyPropertyChanged(nameof(ShoppingCart));

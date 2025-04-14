@@ -2,43 +2,48 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.InventoryManagementView"
-             Title="InventoryManagementView"
-             NavigatedTo="ContentPage_NavigatedTo"
->
-    <VerticalStackLayout>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Entry Text="{Binding Query}" Grid.Column="0"/>
-            <Button Text="Search" Grid.Column="1" Clicked="SearchClicked"/>
+             Title="Inventory Management"
+             NavigatedTo="ContentPage_NavigatedTo">
+    
+    <Grid RowDefinitions="Auto,*,Auto" Padding="15">
+        <!-- Search Bar -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,15">
+            <Entry Text="{Binding Query}" Placeholder="Search products..." Grid.Column="0"/>
+            <Button Text="Search" Grid.Column="1" Clicked="SearchClicked" 
+                    Margin="5,0,0,0" WidthRequest="100"/>
         </Grid>
-        <ListView
-            ItemsSource="{Binding Path=Products}"
-            SelectedItem="{Binding SelectedProduct}"
-        >
+        
+        <!-- Product List -->
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Path=Products}"
+                  SelectedItem="{Binding SelectedProduct}"
+                  SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10*"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Display}"/>
-                            <Button Grid.Column="1" Text="Edit"/>
-                            <Button Grid.Column="2" Text="Delete"/>
+                        <Grid Padding="10" ColumnDefinitions="3*,*,*,Auto,Auto">
+                            <Label Grid.Column="0" Text="{Binding Product.Name}" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Text="{Binding Product.Price, StringFormat='${0:F2}'}" TextColor="Green" />
+                            <Label Grid.Column="2" Text="{Binding Quantity, StringFormat='Qty: {0}'}" />
+                            <Button Grid.Column="3" Text="Edit" Clicked="ItemEditClicked" 
+                                    VerticalOptions="Center" CommandParameter="{Binding Id}" />
+                            <Button Grid.Column="4" Text="Delete" Clicked="ItemDeleteClicked" 
+                                    VerticalOptions="Center" BackgroundColor="Red" TextColor="White"
+                                    CommandParameter="{Binding Id}" />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="Add" Clicked="AddClicked"/>
-        <Button Text="Edit" Clicked="EditClicked"/>
-        <Button Text="Delete" Clicked="DeleteClicked"/>
-        <Button Text="Go Back" Clicked="CancelClicked"/>
-    </VerticalStackLayout>
+        
+        <!-- Action Buttons -->
+        <VerticalStackLayout Grid.Row="2" Spacing="10" Margin="0,15,0,0">
+            <Button Text="Add New Product" Clicked="AddClicked" 
+                    BackgroundColor="Green" TextColor="White" />
+            <Button Text="Go to Shopping Cart" Clicked="GoToShoppingClicked" 
+                    BackgroundColor="DeepPink" TextColor="White" />
+            <Button Text="Go Back" Clicked="CancelClicked" 
+                    BackgroundColor="Gray" TextColor="White" />
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>
