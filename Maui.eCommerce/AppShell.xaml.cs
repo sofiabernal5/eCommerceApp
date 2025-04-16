@@ -8,6 +8,12 @@ namespace Maui.eCommerce
         public AppShell()
         {
             InitializeComponent();
+            
+            // Register routes for navigation
+            Routing.RegisterRoute(nameof(ProductDetails), typeof(ProductDetails));
+            Routing.RegisterRoute(nameof(InventoryManagementView), typeof(InventoryManagementView));
+            Routing.RegisterRoute(nameof(ShoppingManagementView), typeof(ShoppingManagementView));
+            Routing.RegisterRoute(nameof(ConfigurationView), typeof(ConfigurationView));
         }
     }
 }

@@ -103,5 +103,6 @@ namespace Maui.eCommerce.Views
         {
             await Shell.Current.GoToAsync("//MainPage");
         }
+        
     }
 }

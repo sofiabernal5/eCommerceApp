@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.eCommerce.Views.ConfigurationView"
+             Title="Configuration"
+             BackgroundColor="AntiqueWhite">
+    
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label Text="Application Settings" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" 
+               Margin="0,0,0,20" />
+        
+        <!-- Tax Rate Setting -->
+        <Label Text="Tax Rate Settings" 
+               FontSize="18" 
+               FontAttributes="Bold" />
+        
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="15">
+            <Label Grid.Row="0" Grid.Column="0" 
+                   Text="Tax Rate:" 
+                   VerticalOptions="Center" />
+            
+            <Entry Grid.Row="0" Grid.Column="1" 
+                   Text="{Binding TaxRateDisplay}" 
+                   Keyboard="Numeric"
+                   TextChanged="TaxRateTextChanged"
+                   Placeholder="Enter tax rate percentage"
+                   ReturnCommand="{Binding SaveCommand}" />
+            
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                   Text="Enter the tax rate as a percentage (e.g., 7 for 7%)" 
+                   TextColor="Gray"
+                   FontSize="12" />
+        </Grid>
+        
+        <BoxView HeightRequest="1" 
+                 BackgroundColor="LightGray" 
+                 Margin="0,10" />
+        
+        <!-- Action Buttons -->
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+            <Button Grid.Column="0" 
+                    Text="Save" 
+                    Clicked="SaveClicked"
+                    BackgroundColor="Green" 
+                    TextColor="White" />
+            
+            <Button Grid.Column="1" 
+                    Text="Cancel" 
+                    Clicked="CancelClicked"
+                    BackgroundColor="Gray" 
+                    TextColor="White" />
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

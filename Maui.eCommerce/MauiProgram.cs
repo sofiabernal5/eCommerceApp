@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Maui.eCommerce.Converters;
 
 namespace Maui.eCommerce
 {
@@ -14,6 +15,9 @@ namespace Maui.eCommerce
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            // Register services and converters
+            builder.Services.AddSingleton<GreaterThanZeroConverter>();
 
 #if DEBUG
             builder.Logging.AddDebug();

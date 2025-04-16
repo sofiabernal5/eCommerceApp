@@ -1,13 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Maui.eCommerce.MainPage">
+             x:Class="Maui.eCommerce.MainPage"
+             BackgroundColor="RosyBrown">
 
     <ScrollView>
-        <VerticalStackLayout>
-            <Label Text="{Binding Display}"/>
-            <Button Text="Inventory Management" Clicked="InventoryClicked"/>
-            <Button Text="Shop" Clicked="ShopClicked"/>
+        <VerticalStackLayout Spacing="25" Padding="30" VerticalOptions="Center">
+            <Image Source="amazon.png"
+                   HeightRequest="200"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="E-Commerce App"
+                   FontSize="32"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="{Binding Display}"
+                   FontSize="18"
+                   HorizontalOptions="Center" />
+                   
+            <Button Text="Inventory Management" 
+                    Clicked="InventoryClicked"
+                    BackgroundColor="#896868"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Margin="0,20,0,0" />
+                    
+            <Button Text="Shop" 
+                    Clicked="ShopClicked"
+                    BackgroundColor="#896868"
+                    TextColor="White"
+                    CornerRadius="8" />
+                    
+            <Button Text="Tax Configuration" 
+                    Clicked="ConfigClicked"
+                    BackgroundColor="#896868"
+                    TextColor="White"
+                    CornerRadius="8" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

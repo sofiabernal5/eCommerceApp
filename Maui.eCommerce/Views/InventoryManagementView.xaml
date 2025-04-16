@@ -3,15 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.InventoryManagementView"
              Title="Inventory Management"
-             NavigatedTo="ContentPage_NavigatedTo">
+             NavigatedTo="ContentPage_NavigatedTo"
+             BackgroundColor="Pink">
     
     <Grid RowDefinitions="Auto,*,Auto" Padding="15">
         <!-- Search Bar -->
         <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,15">
-            <Entry Text="{Binding Query}" Placeholder="Search products..." Grid.Column="0"/>
+            <Entry Text="{Binding Query}" Placeholder="Search products..." Grid.Column="0" TextColor="White" BackgroundColor="RosyBrown"/>
             <Button Text="Search" Grid.Column="1" Clicked="SearchClicked" 
-                    Margin="5,0,0,0" WidthRequest="100"/>
+                    Margin="5,0,0,0" WidthRequest="100"
+                    BackgroundColor="RosyBrown" TextColor="White"/>
         </Grid>
+        
+        
         
         <!-- Product List -->
         <ListView Grid.Row="1"
@@ -21,14 +25,14 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Padding="10" ColumnDefinitions="3*,*,*,Auto,Auto">
+                        <Grid Padding="10" ColumnDefinitions="3*,*,*,Auto,Auto" BackgroundColor="#d8bfbf">
                             <Label Grid.Column="0" Text="{Binding Product.Name}" FontAttributes="Bold" />
                             <Label Grid.Column="1" Text="{Binding Product.Price, StringFormat='${0:F2}'}" TextColor="Green" />
                             <Label Grid.Column="2" Text="{Binding Quantity, StringFormat='Qty: {0}'}" />
                             <Button Grid.Column="3" Text="Edit" Clicked="ItemEditClicked" 
-                                    VerticalOptions="Center" CommandParameter="{Binding Id}" />
+                                    VerticalOptions="Center" BackgroundColor="#c99999" CommandParameter="{Binding Id}" />
                             <Button Grid.Column="4" Text="Delete" Clicked="ItemDeleteClicked" 
-                                    VerticalOptions="Center" BackgroundColor="Red" TextColor="White"
+                                    VerticalOptions="Center" BackgroundColor="#b88b8b" TextColor="White"
                                     CommandParameter="{Binding Id}" />
                         </Grid>
                     </ViewCell>
@@ -39,11 +43,11 @@
         <!-- Action Buttons -->
         <VerticalStackLayout Grid.Row="2" Spacing="10" Margin="0,15,0,0">
             <Button Text="Add New Product" Clicked="AddClicked" 
-                    BackgroundColor="Green" TextColor="White" />
+                    BackgroundColor="#b88b8b" TextColor="White" />
             <Button Text="Go to Shopping Cart" Clicked="GoToShoppingClicked" 
-                    BackgroundColor="DeepPink" TextColor="White" />
+                    BackgroundColor="#b88b8b" TextColor="White" />
             <Button Text="Go Back" Clicked="CancelClicked" 
-                    BackgroundColor="Gray" TextColor="White" />
+                    BackgroundColor="#b88b8b" TextColor="White" />
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

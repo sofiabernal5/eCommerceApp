@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.ProductDetails"
              Title="Product Details"
-             NavigatedTo="ContentPage_NavigatedTo">
+             NavigatedTo="ContentPage_NavigatedTo"
+             BackgroundColor="#ffe9ec">
     
-    <VerticalStackLayout Padding="20" Spacing="10">
-        <Label Text="Product Details" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" />
+    <VerticalStackLayout Padding="20" Spacing="10" >
+        <Label Text="Inventory Management" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" />
         
         <Label Text="Name:" FontAttributes="Bold" />
-        <Entry Text="{Binding Name, Mode=TwoWay}" Placeholder="Enter product name" />
+        <Entry Text="{Binding Name, Mode=TwoWay}" Placeholder="Enter product name" TextColor="Black"/>
         
         <Label Text="Price:" FontAttributes="Bold" Margin="0,10,0,0" />
         <Entry Text="{Binding Price, Mode=TwoWay}" Placeholder="Enter price" Keyboard="Numeric" />
@@ -18,9 +19,9 @@
         <Entry Text="{Binding Quantity, Mode=TwoWay}" Placeholder="Enter quantity" Keyboard="Numeric" />
         
         <Button Text="Save" Clicked="OkClicked" Margin="0,20,0,0" 
-                BackgroundColor="Green" TextColor="White" />
+                BackgroundColor="#896868" TextColor="White" />
         
         <Button Text="Cancel" Clicked="GoBackClicked"
-                BackgroundColor="Gray" TextColor="White" />
+                BackgroundColor="#c99999" TextColor="White" />
     </VerticalStackLayout>
 </ContentPage>

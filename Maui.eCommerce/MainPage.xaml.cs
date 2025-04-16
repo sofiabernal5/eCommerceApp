@@ -4,12 +4,10 @@ namespace Maui.eCommerce
 {
     public partial class MainPage : ContentPage
     {
-        //int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = this;
+            BindingContext = new MainViewModel();
         }
 
         private void InventoryClicked(object sender, EventArgs e)
@@ -21,6 +19,10 @@ namespace Maui.eCommerce
         {
             Shell.Current.GoToAsync("//ShoppingManagement");
         }
+        
+        private void ConfigClicked(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("//ConfigurationView");
+        }
     }
-
 }

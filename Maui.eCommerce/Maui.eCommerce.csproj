@@ -66,4 +66,13 @@
 	  <ProjectReference Include="..\Library.eCommerce\Library.eCommerce.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Remove="Views\CartManagementView.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Views\CartManagementView.xaml.cs" />
+	  <Compile Remove="ViewModels\CartViewModel.cs" />
+	</ItemGroup>
+
 </Project>
