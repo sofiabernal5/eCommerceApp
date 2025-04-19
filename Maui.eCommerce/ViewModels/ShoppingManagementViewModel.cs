@@ -206,7 +206,7 @@ namespace Maui.eCommerce.ViewModels
             }
         }
 
-        // Add selected inventory item to cart
+        // Add to cart (transfers item from inventory to cart)
         public void AddToCart()
         {
             if (CanAddToCart)
@@ -217,7 +217,7 @@ namespace Maui.eCommerce.ViewModels
             }
         }
 
-        // Quick add to cart with specified quantity
+        // Quick add to cart with specified quantity (called from the inline entry/button control)
         public void QuickAddToCart(Item? item, int quantity)
         {
             if (item != null && item.Quantity >= quantity && quantity > 0)

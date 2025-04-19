@@ -74,6 +74,28 @@ namespace Maui.eCommerce.Views
             ViewModel.AddToCart();
         }
         
+        private void QuickAddToCartClicked(object sender, EventArgs e)
+        {
+            if (sender is Button button && button.CommandParameter is Library.eCommerce.Models.Item item)
+            {
+                // Get the parent StackLayout
+                var stackLayout = button.Parent as StackLayout;
+                if (stackLayout != null)
+                {
+                    // Find the quantity entry in the StackLayout's children
+                    var entry = stackLayout.Children.FirstOrDefault(c => c is Entry) as Entry;
+                    if (entry != null && int.TryParse(entry.Text, out int quantity) && quantity > 0)
+                    {
+                        // Call the ViewModel method to add the specified quantity
+                        ViewModel.QuickAddToCart(item, quantity);
+                        
+                        // Reset the entry to "1" after adding
+                        entry.Text = "1";
+                    }
+                }
+            }
+        }
+        
         private async void UpdateCartItemClicked(object sender, EventArgs e)
         {
             if (ViewModel.SelectedCartItem == null) return;
@@ -103,6 +125,5 @@ namespace Maui.eCommerce.Views
         {
             await Shell.Current.GoToAsync("//MainPage");
         }
-        
     }
 }
