@@ -39,7 +39,13 @@ namespace Maui.eCommerce.ViewModels
             // Initialize wishlists with a default cart
             _wishlists = new Dictionary<string, ObservableCollection<Item?>>();
             _currentWishlist = "Default Cart";
-            _wishlists[_currentWishlist] = _cartSvc.CartItems;
+            _wishlists[_currentWishlist] = new ObservableCollection<Item?>();
+
+            // Add the "My Wishlist" cart as a second default option
+            if (!_wishlists.ContainsKey("My Wishlist"))
+            {
+                _wishlists["My Wishlist"] = new ObservableCollection<Item?>();
+            }
 
             // Subscribe to cart changes
             _cartSvc.CartChanged += (s, e) =>
@@ -92,6 +98,7 @@ namespace Maui.eCommerce.ViewModels
             get
             {
                 var cartItems = _wishlists[_currentWishlist];
+                
                 // Apply sorting
                 if (_cartSortOption == 0) // Sort by name
                 {
@@ -101,7 +108,7 @@ namespace Maui.eCommerce.ViewModels
                 {
                     return new ObservableCollection<Item?>(cartItems.OrderBy(i => i?.Product?.Price));
                 }
-
+                
                 return cartItems;
             }
         }
@@ -219,7 +226,7 @@ namespace Maui.eCommerce.ViewModels
                 NotifyPropertyChanged(nameof(CanAddToCart));
             }
         }
-
+        
         // Quick add to cart with specified quantity (called from the inline entry/button control)
         public void QuickAddToCart(Item? item, int quantity)
         {
@@ -248,7 +255,7 @@ namespace Maui.eCommerce.ViewModels
             }
             else
             {
-                // Add new item to cart with quantity 1
+                // Add new item to cart with the specified quantity
                 var newCartItem = new Item
                 {
                     Product = inventoryItem.Product,
@@ -328,13 +335,14 @@ namespace Maui.eCommerce.ViewModels
             }
         }
 
-        // Process checkout
+        // Process checkout for the current cart
         public string Checkout()
         {
             if (HasCartItems)
             {
                 double subtotal = 0;
-                string receipt = "ITEMIZED RECEIPT\n==================\n\n";
+                string receipt = $"CART: {_currentWishlist}\n";
+                receipt += "ITEMIZED RECEIPT\n==================\n\n";
 
                 foreach (var item in _wishlists[_currentWishlist])
                 {
@@ -441,7 +449,7 @@ namespace Maui.eCommerce.ViewModels
         // Create a new wishlist cart
         public void CreateWishlist(string name)
         {
-            if (!_wishlists.ContainsKey(name))
+            if (!string.IsNullOrEmpty(name) && !_wishlists.ContainsKey(name))
             {
                 _wishlists[name] = new ObservableCollection<Item?>();
                 CurrentWishlist = name;

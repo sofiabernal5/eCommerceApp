@@ -125,5 +125,32 @@ namespace Maui.eCommerce.Views
         {
             await Shell.Current.GoToAsync("//MainPage");
         }
+        
+        // Wishlist feature event handlers
+        private void WishlistChanged(object sender, EventArgs e)
+        {
+            ViewModel.SwitchWishlist();
+        }
+        
+        private async void AddWishlistClicked(object sender, EventArgs e)
+        {
+            string name = await DisplayPromptAsync("New Cart", "Enter a name for your new cart:", initialValue: "My Wishlist");
+            if (!string.IsNullOrEmpty(name))
+            {
+                ViewModel.CreateWishlist(name);
+            }
+        }
+        
+        private async void DeleteWishlistClicked(object sender, EventArgs e)
+        {
+            bool confirm = await DisplayAlert("Confirm Delete", 
+                $"Are you sure you want to delete the '{ViewModel.CurrentWishlist}' cart?", 
+                "Yes", "No");
+                
+            if (confirm)
+            {
+                ViewModel.DeleteCurrentWishlist();
+            }
+        }
     }
 }
