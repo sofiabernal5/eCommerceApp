@@ -20,11 +20,23 @@
 
             
             <!-- INVENTORY SECTION -->
-            <Grid Grid.Column="0" Padding="10" RowDefinitions="Auto, *, Auto">
+            <Grid Grid.Column="0" Padding="10" RowDefinitions="Auto, Auto, *, Auto">
                 <Label Grid.Row="0" Text="Store Inventory" FontSize="20" FontAttributes="Bold"
                        HorizontalOptions="Center" Margin="0,0,0,10"/>
                 
-                <ListView Grid.Row="1"
+                <!-- Inventory Sort Controls -->
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,0,0,10">
+                    <Label Grid.Column="0" Text="Sort by:" VerticalOptions="Center" />
+                    <Picker Grid.Column="1" SelectedIndex="{Binding InventorySortOption, Mode=TwoWay}" 
+                            BackgroundColor="#ffd4d4" TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Name</x:String>
+                            <x:String>Price</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Grid>
+                
+                <ListView Grid.Row="2"
                           ItemsSource="{Binding Inventory}"
                           SelectedItem="{Binding SelectedInventoryItem}"
                           SelectionMode="Single">
@@ -50,7 +62,7 @@
                 </ListView>
                 
                 <!-- Inventory Actions -->
-                <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="5" Margin="0,10,0,0">
+                <StackLayout Grid.Row="3" Orientation="Horizontal" Spacing="5" Margin="0,10,0,0">
                     <Button Text="Create" Clicked="CreateInventoryItemClicked" HorizontalOptions="FillAndExpand" 
                             BackgroundColor="#987554" TextColor="White" />
                     <Button Text="Update" Clicked="UpdateInventoryItemClicked" HorizontalOptions="FillAndExpand" 
@@ -64,11 +76,23 @@
             
 
             <!-- SHOPPING CART SECTION -->
-            <Grid Grid.Column="1" Padding="10" RowDefinitions="Auto, *, Auto">
+            <Grid Grid.Column="1" Padding="10" RowDefinitions="Auto, Auto, *, Auto">
                 <Label Grid.Row="0" Text="Shopping Cart" FontSize="20" FontAttributes="Bold"
                        HorizontalOptions="Center" Margin="0,0,0,10"/>
                 
-                <ListView Grid.Row="1"
+                <!-- Cart Sort Controls -->
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,0,0,10">
+                    <Label Grid.Column="0" Text="Sort by:" VerticalOptions="Center" />
+                    <Picker Grid.Column="1" SelectedIndex="{Binding CartSortOption, Mode=TwoWay}" 
+                            BackgroundColor="#ffd4d4" TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Name</x:String>
+                            <x:String>Price</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Grid>
+                
+                <ListView Grid.Row="2"
                           ItemsSource="{Binding ShoppingCart}"
                           SelectedItem="{Binding SelectedCartItem}"
                           SelectionMode="Single">
@@ -86,7 +110,7 @@
                 </ListView>
                 
                 <!-- Cart Actions -->
-                <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="5" Margin="0,10,0,0">
+                <StackLayout Grid.Row="3" Orientation="Horizontal" Spacing="5" Margin="0,10,0,0">
                     <Button Text="Add To Cart" Clicked="AddToCartClicked" HorizontalOptions="FillAndExpand" 
                             BackgroundColor="DeepPink" TextColor="White" 
                             IsEnabled="{Binding CanAddToCart}" />

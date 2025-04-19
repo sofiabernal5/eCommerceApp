@@ -91,21 +91,18 @@ namespace Maui.eCommerce.ViewModels
         {
             get
             {
-                var sortedItems = _wishlists[_currentWishlist];
-
+                var cartItems = _wishlists[_currentWishlist];
                 // Apply sorting
                 if (_cartSortOption == 0) // Sort by name
                 {
-                    sortedItems =
-                        new ObservableCollection<Item?>(_wishlists[_currentWishlist].OrderBy(i => i?.Product?.Name));
+                    return new ObservableCollection<Item?>(cartItems.OrderBy(i => i?.Product?.Name));
                 }
                 else if (_cartSortOption == 1) // Sort by price
                 {
-                    sortedItems =
-                        new ObservableCollection<Item?>(_wishlists[_currentWishlist].OrderBy(i => i?.Product?.Price));
+                    return new ObservableCollection<Item?>(cartItems.OrderBy(i => i?.Product?.Price));
                 }
 
-                return sortedItems;
+                return cartItems;
             }
         }
 
@@ -134,9 +131,12 @@ namespace Maui.eCommerce.ViewModels
             get { return _inventorySortOption; }
             set
             {
-                _inventorySortOption = value;
-                NotifyPropertyChanged(nameof(InventorySortOption));
-                NotifyPropertyChanged(nameof(Inventory));
+                if (_inventorySortOption != value)
+                {
+                    _inventorySortOption = value;
+                    NotifyPropertyChanged(nameof(InventorySortOption));
+                    NotifyPropertyChanged(nameof(Inventory));
+                }
             }
         }
 
@@ -145,9 +145,12 @@ namespace Maui.eCommerce.ViewModels
             get { return _cartSortOption; }
             set
             {
-                _cartSortOption = value;
-                NotifyPropertyChanged(nameof(CartSortOption));
-                NotifyPropertyChanged(nameof(ShoppingCart));
+                if (_cartSortOption != value)
+                {
+                    _cartSortOption = value;
+                    NotifyPropertyChanged(nameof(CartSortOption));
+                    NotifyPropertyChanged(nameof(ShoppingCart));
+                }
             }
         }
 

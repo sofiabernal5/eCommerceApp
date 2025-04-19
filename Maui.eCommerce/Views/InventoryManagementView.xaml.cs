@@ -120,5 +120,10 @@ namespace Maui.eCommerce.Views
         {
             await Shell.Current.GoToAsync("//ShoppingManagement");
         }
+        private void SortOptionChanged(object sender, EventArgs e)
+        {
+            ViewModel.RefreshProductList();
+        }
+        
     }
 }

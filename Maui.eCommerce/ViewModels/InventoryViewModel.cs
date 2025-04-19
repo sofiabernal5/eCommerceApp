@@ -17,6 +17,7 @@ namespace Maui.eCommerce.ViewModels
         public Item? SelectedProduct { get; set; }
         public string? Query { get; set; }
         private ProductServiceProxy _svc = ProductServiceProxy.Current;
+        private int _sortOption = 0; // 0 = Name, 1 = Price, 2 = Quantity
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -30,6 +31,20 @@ namespace Maui.eCommerce.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public int SortOption
+        {
+            get => _sortOption;
+            set
+            {
+                if (_sortOption != value)
+                {
+                    _sortOption = value;
+                    NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(Products)); // Refresh products with new sort
+                }
+            }
+        }
+
         public void RefreshProductList()
         {
             NotifyPropertyChanged(nameof(Products));
@@ -39,8 +54,31 @@ namespace Maui.eCommerce.ViewModels
         {
             get
             {
-                var filteredList = _svc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
-                return new ObservableCollection<Item?>(filteredList);
+                // Filter products by search query
+                var filteredList = _svc.Products.Where(p => 
+                    string.IsNullOrEmpty(Query) || 
+                    (p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false));
+
+                // Apply sorting based on selected option
+                IOrderedEnumerable<Item?> sortedList;
+                
+                switch (_sortOption)
+                {
+                    case 0: // Sort by Name
+                        sortedList = filteredList.OrderBy(p => p?.Product?.Name);
+                        break;
+                    case 1: // Sort by Price
+                        sortedList = filteredList.OrderBy(p => p?.Product?.Price);
+                        break;
+                    case 2: // Sort by Quantity
+                        sortedList = filteredList.OrderBy(p => p?.Quantity);
+                        break;
+                    default:
+                        sortedList = filteredList.OrderBy(p => p?.Product?.Name);
+                        break;
+                }
+
+                return new ObservableCollection<Item?>(sortedList);
             }
         }
 

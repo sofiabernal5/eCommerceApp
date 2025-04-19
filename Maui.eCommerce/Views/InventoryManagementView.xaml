@@ -6,7 +6,7 @@
              NavigatedTo="ContentPage_NavigatedTo"
              BackgroundColor="Pink">
     
-    <Grid RowDefinitions="Auto,*,Auto" Padding="15">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="15">
         <!-- Search Bar -->
         <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,15">
             <Entry Text="{Binding Query}" Placeholder="Search products..." Grid.Column="0" TextColor="White" BackgroundColor="RosyBrown"/>
@@ -15,10 +15,21 @@
                     BackgroundColor="RosyBrown" TextColor="White"/>
         </Grid>
         
-        
+        <!-- Sort Controls -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,0,0,15">
+            <Label Grid.Column="0" Text="Sort by:" VerticalOptions="Center" FontSize="16" TextColor="White" />
+            <Picker Grid.Column="1" SelectedIndex="{Binding SortOption, Mode=TwoWay}" 
+                    BackgroundColor="#faa0a0" TextColor="Black" SelectedIndexChanged="SortOptionChanged">
+                <Picker.Items>
+                    <x:String>Name</x:String>
+                    <x:String>Price</x:String>
+                    <x:String>Quantity</x:String>
+                </Picker.Items>
+            </Picker>
+        </Grid>
         
         <!-- Product List -->
-        <ListView Grid.Row="1"
+        <ListView Grid.Row="2"
                   ItemsSource="{Binding Path=Products}"
                   SelectedItem="{Binding SelectedProduct}"
                   SelectionMode="Single">
@@ -41,7 +52,7 @@
         </ListView>
         
         <!-- Action Buttons -->
-        <VerticalStackLayout Grid.Row="2" Spacing="10" Margin="0,15,0,0">
+        <VerticalStackLayout Grid.Row="3" Spacing="10" Margin="0,15,0,0">
             <Button Text="Add New Product" Clicked="AddClicked" 
                     BackgroundColor="#b88b8b" TextColor="White" />
             <Button Text="Go to Shopping Cart" Clicked="GoToShoppingClicked" 
