@@ -18,6 +18,7 @@ namespace Maui.eCommerce.Views
         {
             ViewModel.RefreshInventory();
             ViewModel.RefreshShoppingCart();
+            ViewModel.RefreshTaxRate();
         }
 
         private async void CreateInventoryItemClicked(object sender, EventArgs e)

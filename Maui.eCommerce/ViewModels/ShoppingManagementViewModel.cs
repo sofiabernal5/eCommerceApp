@@ -16,7 +16,6 @@ namespace Maui.eCommerce.ViewModels
         private ObservableCollection<Item?> _inventory;
         private Item? _selectedInventoryItem;
         private Item? _selectedCartItem;
-        private string _checkoutMessage;
         private int _inventorySortOption;
         private int _cartSortOption;
 
@@ -34,7 +33,7 @@ namespace Maui.eCommerce.ViewModels
             _invSvc = ProductServiceProxy.Current;
             _cartSvc = ShoppingCartService.Current;
             _inventory = new ObservableCollection<Item?>(_invSvc.Products);
-            _checkoutMessage = string.Empty;
+
 
             // Initialize wishlists with a default cart
             _wishlists = new Dictionary<string, ObservableCollection<Item?>>();
@@ -72,7 +71,8 @@ namespace Maui.eCommerce.ViewModels
         {
             Preferences.Set("TaxRate", _taxRate);
         }
-
+        
+        //sort products by name and price
         public ObservableCollection<Item?> Inventory
         {
             get
@@ -93,6 +93,7 @@ namespace Maui.eCommerce.ViewModels
             }
         }
 
+        //sort cart items by name and price
         public ObservableCollection<Item?> ShoppingCart
         {
             get
@@ -163,7 +164,10 @@ namespace Maui.eCommerce.ViewModels
 
         public double TaxRate
         {
-            get { return _taxRate; }
+            get
+            {
+                return _taxRate;
+            }
             set
             {
                 if (_taxRate != value && value >= 0)
@@ -205,16 +209,7 @@ namespace Maui.eCommerce.ViewModels
         public bool HasCartItems => _wishlists[_currentWishlist].Count > 0;
 
         public bool CanAddToCart => SelectedInventoryItem != null && SelectedInventoryItem.Quantity > 0;
-
-        public string CheckoutMessage
-        {
-            get { return _checkoutMessage; }
-            set
-            {
-                _checkoutMessage = value;
-                NotifyPropertyChanged(nameof(CheckoutMessage));
-            }
-        }
+        
 
         // Add to cart (transfers item from inventory to cart)
         public void AddToCart()
@@ -365,8 +360,10 @@ namespace Maui.eCommerce.ViewModels
                 receipt += "==================\n";
                 receipt += "Thank you for your purchase!";
 
-                // Clear the cart
-                ClearCurrentCart();
+                // Clear the cart WITHOUT returning items to inventory
+                _wishlists[_currentWishlist].Clear();
+                NotifyPropertyChanged(nameof(ShoppingCart));
+                NotifyPropertyChanged(nameof(HasCartItems));
 
                 return receipt;
             }
@@ -382,9 +379,9 @@ namespace Maui.eCommerce.ViewModels
                 if (cartItem != null)
                 {
                     // Find corresponding inventory item
-                    var inventoryItem = _invSvc.Products.FirstOrDefault(i =>
+                    var inventoryItem = _invSvc.Products.FirstOrDefault(i => 
                         i?.Product?.Id == cartItem.Product?.Id);
-
+            
                     if (inventoryItem != null)
                     {
                         // Return quantity to inventory
@@ -392,12 +389,18 @@ namespace Maui.eCommerce.ViewModels
                     }
                 }
             }
-
+    
             _wishlists[_currentWishlist].Clear();
             NotifyPropertyChanged(nameof(ShoppingCart));
             NotifyPropertyChanged(nameof(HasCartItems));
             NotifyPropertyChanged(nameof(Inventory));
         }
+        // private void ClearCartOnly()
+        // {
+        //     _wishlists[_currentWishlist].Clear();
+        //     NotifyPropertyChanged(nameof(ShoppingCart));
+        //     NotifyPropertyChanged(nameof(HasCartItems));
+        // }
 
         // Create new inventory item
         public void CreateInventoryItem(string name, double price, int quantity)
@@ -495,6 +498,16 @@ namespace Maui.eCommerce.ViewModels
             NotifyPropertyChanged(nameof(HasCartItems));
         }
 
+        // Add this method to ShoppingManagementViewModel
+        public void RefreshTaxRate()
+        {
+            // Load the current tax rate from preferences
+            if (Preferences.ContainsKey("TaxRate"))
+            {
+                _taxRate = Preferences.Get("TaxRate", 0.07);
+                NotifyPropertyChanged(nameof(TaxRate));
+            }
+        }
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

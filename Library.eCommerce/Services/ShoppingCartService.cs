@@ -51,247 +51,191 @@ namespace Library.eCommerce.Services
         }
         
         // Create a new cart
-        public bool CreateCart(string cartName)
-        {
-            if (string.IsNullOrEmpty(cartName) || _carts.ContainsKey(cartName))
-                return false;
-                
-            _carts[cartName] = new ObservableCollection<Item?>();
-            return true;
-        }
+        // public bool CreateCart(string cartName)
+        // {
+        //     if (string.IsNullOrEmpty(cartName) || _carts.ContainsKey(cartName))
+        //         return false;
+        //         
+        //     _carts[cartName] = new ObservableCollection<Item?>();
+        //     return true;
+        // }
         
         // Delete a cart (except Default)
-        public bool DeleteCart(string cartName)
-        {
-            if (cartName == "Default" || !_carts.ContainsKey(cartName))
-                return false;
-                
-            // Return all items to inventory
-            var cartItems = _carts[cartName].ToList();
-            foreach (var item in cartItems)
-            {
-                if (item != null)
-                {
-                    ReturnToInventory(item);
-                }
-            }
-            
-            _carts.Remove(cartName);
-            
-            // If current cart was deleted, switch to Default
-            if (_currentCart == cartName)
-            {
-                _currentCart = "Default";
-                CartChanged?.Invoke(this, EventArgs.Empty);
-            }
-            
-            return true;
-        }
+        // public bool DeleteCart(string cartName)
+        // {
+        //     if (cartName == "Default" || !_carts.ContainsKey(cartName))
+        //         return false;
+        //         
+        //     // Return all items to inventory
+        //     var cartItems = _carts[cartName].ToList();
+        //     foreach (var item in cartItems)
+        //     {
+        //         if (item != null)
+        //         {
+        //             ReturnToInventory(item);
+        //         }
+        //     }
+        //     
+        //     _carts.Remove(cartName);
+        //     
+        //     // If current cart was deleted, switch to Default
+        //     if (_currentCart == cartName)
+        //     {
+        //         _currentCart = "Default";
+        //         CartChanged?.Invoke(this, EventArgs.Empty);
+        //     }
+        //     
+        //     return true;
+        // }
         
         // Helper method to return item to inventory
-        private void ReturnToInventory(Item cartItem)
-        {
-            var inventoryItem = _productService.Products.FirstOrDefault(i => 
-                i?.Product?.Id == cartItem.Product?.Id);
-                
-            if (inventoryItem != null)
-            {
-                inventoryItem.Quantity += cartItem.Quantity;
-            }
-        }
+        // private void ReturnToInventory(Item cartItem)
+        // {
+        //     var inventoryItem = _productService.Products.FirstOrDefault(i => 
+        //         i?.Product?.Id == cartItem.Product?.Id);
+        //         
+        //     if (inventoryItem != null)
+        //     {
+        //         inventoryItem.Quantity += cartItem.Quantity;
+        //     }
+        // }
 
         // Add to cart (transfers item from inventory to cart)
-        public bool AddToCart(Item? inventoryItem)
-        {
-            if (inventoryItem == null || inventoryItem.Quantity <= 0)
-                return false;
-
-            // Check if we already have this item in cart
-            var existingCartItem = CartItems.FirstOrDefault(i => 
-                i?.Product?.Id == inventoryItem.Product?.Id);
-    
-            // Create new cart item or update existing
-            if (existingCartItem != null)
-            {
-                // Increment quantity in cart
-                existingCartItem.Quantity += 1;
-            }
-            else
-            {
-                // Add new item to cart with quantity 1
-                var newCartItem = new Item
-                {
-                    Product = inventoryItem.Product,
-                    Quantity = 1
-                };
-                CartItems.Add(newCartItem);
-            }
-    
-            // Decrease quantity in inventory
-            inventoryItem.Quantity -= 1;
-    
-            // Notify subscribers
-            OnCartChanged();
-            return true;
-        }
+        // public bool AddToCart(Item? inventoryItem)
+        // {
+        //     if (inventoryItem == null || inventoryItem.Quantity <= 0)
+        //         return false;
+        //
+        //     // Check if we already have this item in cart
+        //     var existingCartItem = CartItems.FirstOrDefault(i => 
+        //         i?.Product?.Id == inventoryItem.Product?.Id);
+        //
+        //     // Create new cart item or update existing
+        //     if (existingCartItem != null)
+        //     {
+        //         // Increment quantity in cart
+        //         existingCartItem.Quantity += 1;
+        //     }
+        //     else
+        //     {
+        //         // Add new item to cart with quantity 1
+        //         var newCartItem = new Item
+        //         {
+        //             Product = inventoryItem.Product,
+        //             Quantity = 1
+        //         };
+        //         CartItems.Add(newCartItem);
+        //     }
+        //
+        //     // Decrease quantity in inventory
+        //     inventoryItem.Quantity -= 1;
+        //
+        //     // Notify subscribers
+        //     OnCartChanged();
+        //     return true;
+        // }
         
         // Add to cart with specified quantity
-        public bool AddToCart(Item? inventoryItem, int quantity)
-        {
-            if (inventoryItem == null || inventoryItem.Quantity < quantity || quantity <= 0)
-                return false;
-
-            // Check if we already have this item in cart
-            var existingCartItem = CartItems.FirstOrDefault(i => 
-                i?.Product?.Id == inventoryItem.Product?.Id);
-    
-            // Create new cart item or update existing
-            if (existingCartItem != null)
-            {
-                // Increment quantity in cart
-                existingCartItem.Quantity += quantity;
-            }
-            else
-            {
-                // Add new item to cart with specified quantity
-                var newCartItem = new Item
-                {
-                    Product = inventoryItem.Product,
-                    Quantity = quantity
-                };
-                CartItems.Add(newCartItem);
-            }
-    
-            // Decrease quantity in inventory
-            inventoryItem.Quantity -= quantity;
-    
-            // Notify subscribers
-            OnCartChanged();
-            return true;
-        }
+        // public bool AddToCart(Item? inventoryItem, int quantity)
+        // {
+        //     if (inventoryItem == null || inventoryItem.Quantity < quantity || quantity <= 0)
+        //         return false;
+        //
+        //     // Check if we already have this item in cart
+        //     var existingCartItem = CartItems.FirstOrDefault(i => 
+        //         i?.Product?.Id == inventoryItem.Product?.Id);
+        //
+        //     // Create new cart item or update existing
+        //     if (existingCartItem != null)
+        //     {
+        //         // Increment quantity in cart
+        //         existingCartItem.Quantity += quantity;
+        //     }
+        //     else
+        //     {
+        //         // Add new item to cart with specified quantity
+        //         var newCartItem = new Item
+        //         {
+        //             Product = inventoryItem.Product,
+        //             Quantity = quantity
+        //         };
+        //         CartItems.Add(newCartItem);
+        //     }
+        //
+        //     // Decrease quantity in inventory
+        //     inventoryItem.Quantity -= quantity;
+        //
+        //     // Notify subscribers
+        //     OnCartChanged();
+        //     return true;
+        // }
 
         // Remove from cart (transfers item from cart back to inventory)
-        public bool RemoveFromCart(Item? cartItem)
-        {
-            if (cartItem == null || cartItem.Quantity <= 0)
-                return false;
-
-            // Find corresponding inventory item
-            var inventoryItem = _productService.Products.FirstOrDefault(i => 
-                i?.Product?.Id == cartItem.Product?.Id);
-            
-            if (inventoryItem != null)
-            {
-                // Increase inventory quantity
-                inventoryItem.Quantity += cartItem.Quantity;
-                
-                // Remove from cart
-                CartItems.Remove(cartItem);
-                
-                // Notify subscribers
-                OnCartChanged();
-                return true;
-            }
-            
-            return false;
-        }
+        // public bool RemoveFromCart(Item? cartItem)
+        // {
+        //     if (cartItem == null || cartItem.Quantity <= 0)
+        //         return false;
+        //
+        //     // Find corresponding inventory item
+        //     var inventoryItem = _productService.Products.FirstOrDefault(i => 
+        //         i?.Product?.Id == cartItem.Product?.Id);
+        //     
+        //     if (inventoryItem != null)
+        //     {
+        //         // Increase inventory quantity
+        //         inventoryItem.Quantity += cartItem.Quantity;
+        //         
+        //         // Remove from cart
+        //         CartItems.Remove(cartItem);
+        //         
+        //         // Notify subscribers
+        //         OnCartChanged();
+        //         return true;
+        //     }
+        //     
+        //     return false;
+        // }
         
         // Update quantity in cart
-        public bool UpdateCartItemQuantity(Item? cartItem, int newQuantity)
-        {
-            if (cartItem == null)
-                return false;
-                
-            // Find corresponding inventory item
-            var inventoryItem = _productService.Products.FirstOrDefault(i => 
-                i?.Product?.Id == cartItem.Product?.Id);
-            
-            if (inventoryItem == null)
-                return false;
-                
-            int currentQuantity = cartItem.Quantity;
-            int quantityDifference = newQuantity - currentQuantity;
-            
-            // Check if we have enough inventory
-            if (quantityDifference > 0 && inventoryItem.Quantity < quantityDifference)
-                return false;
-                
-            // Update quantities
-            cartItem.Quantity = newQuantity;
-            inventoryItem.Quantity -= quantityDifference;
-            
-            // If quantity is 0, remove from cart
-            if (cartItem.Quantity <= 0)
-                CartItems.Remove(cartItem);
-                
-            // Notify subscribers
-            OnCartChanged();
-            return true;
-        }
-
-        // Clear the cart (return all items to inventory)
-        public void ClearCart()
-        {
-            foreach (var cartItem in CartItems.ToList())
-            {
-                if (cartItem != null)
-                {
-                    // Find corresponding inventory item
-                    var inventoryItem = _productService.Products.FirstOrDefault(i => 
-                        i?.Product?.Id == cartItem.Product?.Id);
-                    
-                    if (inventoryItem != null)
-                    {
-                        // Return quantity to inventory
-                        inventoryItem.Quantity += cartItem.Quantity;
-                    }
-                }
-            }
-            
-            CartItems.Clear();
-            OnCartChanged();
-        }
+        // public bool UpdateCartItemQuantity(Item? cartItem, int newQuantity)
+        // {
+        //     if (cartItem == null)
+        //         return false;
+        //         
+        //     // Find corresponding inventory item
+        //     var inventoryItem = _productService.Products.FirstOrDefault(i => 
+        //         i?.Product?.Id == cartItem.Product?.Id);
+        //     
+        //     if (inventoryItem == null)
+        //         return false;
+        //         
+        //     int currentQuantity = cartItem.Quantity;
+        //     int quantityDifference = newQuantity - currentQuantity;
+        //     
+        //     // Check if we have enough inventory
+        //     if (quantityDifference > 0 && inventoryItem.Quantity < quantityDifference)
+        //         return false;
+        //         
+        //     // Update quantities
+        //     cartItem.Quantity = newQuantity;
+        //     inventoryItem.Quantity -= quantityDifference;
+        //     
+        //     // If quantity is 0, remove from cart
+        //     if (cartItem.Quantity <= 0)
+        //         CartItems.Remove(cartItem);
+        //         
+        //     // Notify subscribers
+        //     OnCartChanged();
+        //     return true;
+        // }
         
-        // Generate receipt and clear cart
-        public string Checkout(double taxRate = 0.07)
-        {
-            if (CartItems.Count == 0)
-                return "Your cart is empty.";
-
-            double subtotal = 0;
-            string receipt = "ITEMIZED RECEIPT\n==================\n\n";
-
-            foreach (var item in CartItems)
-            {
-                if (item != null)
-                {
-                    double itemTotal = (item.Product?.Price ?? 0) * item.Quantity;
-                    receipt += $"{item.Product?.Name} × {item.Quantity} @ ${item.Product?.Price:F2} = ${itemTotal:F2}\n";
-                    subtotal += itemTotal;
-                }
-            }
-
-            double tax = subtotal * taxRate;
-            double total = subtotal + tax;
-
-            receipt += "\n==================\n";
-            receipt += $"Subtotal: ${subtotal:F2}\n";
-            receipt += $"Tax ({taxRate:P0}): ${tax:F2}\n";
-            receipt += $"TOTAL: ${total:F2}\n";
-            receipt += "==================\n";
-            receipt += "Thank you for your purchase!";
-
-            // Items are already removed from inventory, so just clear the cart
-            CartItems.Clear();
-            OnCartChanged();
-
-            return receipt;
-        }
+        
+        
         
         // Notify that cart has changed
-        private void OnCartChanged()
-        {
-            CartChanged?.Invoke(this, EventArgs.Empty);
-        }
+        // private void OnCartChanged()
+        // {
+        //     CartChanged?.Invoke(this, EventArgs.Empty);
+        // }
     }
 }
